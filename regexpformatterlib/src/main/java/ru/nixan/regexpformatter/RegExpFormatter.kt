@@ -3,12 +3,31 @@ package ru.nixan.regexpformatter
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
+import android.text.TextWatcher
 
-class RegExpFormatter(regExpMask: String) {
+class RegExpFormatter(regExpMask: String) : TextWatcher {
+
+    private var isEditing = false
+
+    override fun afterTextChanged(p0: Editable?) {
+        if (!isEditing) {
+            isEditing = true
+            p0?.let {
+                format(it)
+            }
+            isEditing = false
+        }
+    }
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
 
     private val regularExpression: RegularExpression = RegularExpression.parseRegularExpression(regExpMask)
 
-    fun check(value: String): Boolean {
+    public fun check(value: String): Boolean {
         var start = 0
         var itemPosition = 0
         while (start < value.length && itemPosition < regularExpression.items.size) {
@@ -43,7 +62,7 @@ class RegExpFormatter(regExpMask: String) {
 
     fun format(input: Editable) = regularExpression.format(input, 0)
 
-    val inputType = regularExpression.inputType
+    public val inputType = regularExpression.inputType
 
     override fun toString() = regularExpression.toString()
 

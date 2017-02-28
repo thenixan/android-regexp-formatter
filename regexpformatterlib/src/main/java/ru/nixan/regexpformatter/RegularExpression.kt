@@ -29,12 +29,12 @@ class RegularExpression private constructor(vararg val items: RegExpItem) : RegE
                     }
                 }
             }
-            var formattingSize = 0
-            if (end == -1) {
-                formattingSize = items[regularExpressionItemPosition].format(input, start)
-            } else {
-                formattingSize = items[regularExpressionItemPosition].format(input, start, end)
-            }
+            val formattingSize =
+                    if (end == -1) {
+                        items[regularExpressionItemPosition].format(input, start)
+                    } else {
+                        items[regularExpressionItemPosition].format(input, start, end)
+                    }
 
             lastFormatFinishedWithSize = when (items[regularExpressionItemPosition].length) {
                 is Length.Unlimited -> false
@@ -134,17 +134,17 @@ class RegularExpression private constructor(vararg val items: RegExpItem) : RegE
             val variantsOfExpression = currentRegularExpression.split("|").dropLastWhile(String::isEmpty).toTypedArray()
 
             variantsOfExpression.singleOrNull()?.let {
-                return RegularExpression(*internalParseOneWayExpression(it))
+                return RegularExpression(*parseNonLogicalRegularExpression(it))
             }
 
             val logicalRegExpItem = LogicalRegExpItem()
             for (variant in variantsOfExpression) {
-                logicalRegExpItem.addVariant(RegularExpression(*internalParseOneWayExpression(variant)))
+                logicalRegExpItem.addVariant(RegularExpression(*parseNonLogicalRegularExpression(variant)))
             }
             return RegularExpression(logicalRegExpItem)
         }
 
-        private fun internalParseOneWayExpression(
+        private fun parseNonLogicalRegularExpression(
                 regularExpressionString: String): Array<RegExpItem> {
             val currentRegularExpressionString = regularExpressionString.trimStart { it == '^' }.trimEnd { it == '$' }
             var position = 0
