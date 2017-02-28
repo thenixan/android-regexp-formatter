@@ -33,7 +33,7 @@ class DigitRegExpItem(override val length: Length) : RegExpItem {
 
         string.filterIndexed { i, c -> i >= startPosition && i < endPosition }
                 .forEach {
-                    if (it in '0'..'9') {
+                    if (it !in '0'..'9') {
                         return RegExpItem.MatchResult.Short()
                     }
                 }

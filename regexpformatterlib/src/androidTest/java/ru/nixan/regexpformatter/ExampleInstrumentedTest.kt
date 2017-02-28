@@ -66,4 +66,15 @@ class ExampleInstrumentedTest {
         assertEquals("1test", formatter.format("1t2"))
         assertEquals("12test", formatter.format("12t2"))
     }
+
+    @Test
+    fun testChecks() {
+        val formatter = RegExpFormatter("\\d{1,3}test")
+        assertEquals(true, formatter.check("12test"))
+        assertEquals(true, formatter.check("1test"))
+        assertEquals(true, formatter.check("123test"))
+        assertEquals(false, formatter.check("12tes"))
+        assertEquals(false, formatter.check("123"))
+        assertEquals(false, formatter.check("test"))
+    }
 }
