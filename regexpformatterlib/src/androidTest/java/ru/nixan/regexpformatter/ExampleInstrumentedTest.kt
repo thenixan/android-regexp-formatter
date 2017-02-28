@@ -25,17 +25,17 @@ class ExampleInstrumentedTest {
 
     @Test
     fun testStaticFormatterStartAndEnd() {
-        assertEquals("asd000asd", RegExpFormatter("asd\\d{3}asd", 9).format("000"))
+        assertEquals("asd000asd", RegExpFormatter("asd\\d{3}asd").format("000"))
     }
 
     @Test
     fun testStaticFormatterStart() {
-        assertEquals("asdwww", RegExpFormatter("asd\\w{3}", 6).format("www"))
+        assertEquals("asdwww", RegExpFormatter("asd\\w{3}").format("www"))
     }
 
     @Test
     fun testStaticFormatterMaskInput() {
-        val formatter = RegExpFormatter("asdw\\w{3}", 6)
+        val formatter = RegExpFormatter("asdw\\w{3}")
         assertEquals("asdwww", formatter.format("www"))
         assertEquals("asdw123", formatter.format("123"))
         assertEquals("asd", formatter.format("asd"))
@@ -43,8 +43,8 @@ class ExampleInstrumentedTest {
 
     @Test
     fun testStaticFormatterEnd() {
-        assertEquals("asdwww", RegExpFormatter("\\w{3}www", 6).format("asd"))
-        assertEquals("123www", RegExpFormatter("\\d{3}www", 6).format("123"))
+        assertEquals("asdwww", RegExpFormatter("\\w{3}www").format("asd"))
+        assertEquals("123www", RegExpFormatter("\\d{3}www").format("123"))
     }
 
     @Test
@@ -53,16 +53,6 @@ class ExampleInstrumentedTest {
         assertEquals("askdfjaosdifjas", formatter.format("askdfjaosdifjas"))
         assertEquals("j89f13fj134", formatter.format("j89f13fj134"))
         assertEquals("ajksdfnjaksdnfjkadsnfjkansdjkfnasdjkcnasjcnmadoscmnoadscadsocmadosicmasd", formatter.format("ajksdfnjaksdnfjkadsnfjkansdjkfnasdjkcnasjcnmadoscmnoadscadsocmadosicmasd"))
-    }
-
-    @Test
-    fun testEmptyFormatterWithLength() {
-        val formatter = RegExpFormatter("", 3)
-        assertEquals("ask", formatter.format("askdfjaosdifjas"))
-        assertEquals("as", formatter.format("as"))
-        assertEquals("a", formatter.format("a"))
-        assertEquals(" as", formatter.format(" askdfjaosdifjas"))
-        assertEquals("  a", formatter.format("  askdfjaosdifjas"))
     }
 
     @Test
