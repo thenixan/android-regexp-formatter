@@ -25,7 +25,6 @@ class StaticRegExpItem(val staticData: String) : RegExpItem {
         if (string.length < startPosition)
             return RegExpItem.MatchResult.None()
 
-        var currentNumberOfSymbolsMatched = 0
         var inputIsShorter = false
 
         if (string.length < endPosition) inputIsShorter = true
@@ -33,16 +32,12 @@ class StaticRegExpItem(val staticData: String) : RegExpItem {
         val lookup = string.substring(startPosition, Math.min(string.length, endPosition))
         val target = staticData.substring(0, Math.min(staticData.length, lookup.length))
         if (lookup != target) {
-            (0 until lookup.length)
-                    .filter { lookup[it] == target[it] }
-                    .forEach { currentNumberOfSymbolsMatched++ }
-            return RegExpItem.MatchResult.None(symbolsMatched = currentNumberOfSymbolsMatched)
-        } else
-            currentNumberOfSymbolsMatched = lookup.length
+            return RegExpItem.MatchResult.None()
+        }
         if (inputIsShorter)
-            return RegExpItem.MatchResult.Short(symbolsMatched = currentNumberOfSymbolsMatched)
+            return RegExpItem.MatchResult.Short()
         else
-            return RegExpItem.MatchResult.Full(symbolsMatched = currentNumberOfSymbolsMatched)
+            return RegExpItem.MatchResult.Full()
     }
 
 }

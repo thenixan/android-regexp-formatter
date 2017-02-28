@@ -60,7 +60,6 @@ class IntervalRegExpItem(data: String, override val length: Length) : RegExpItem
                         string.substring(startPosition, endPosition))) {
             return RegExpItem.MatchResult.None()
         }
-        var currentNumberOfSymbolsMatched = 0
         var inputIsShorter = false
         var inputIsLonger = false
         if (string.length < endPosition) {
@@ -72,19 +71,16 @@ class IntervalRegExpItem(data: String, override val length: Length) : RegExpItem
         if (length.compareWithPosition(endPosition - startPosition) > 0) {
             inputIsLonger = true
         }
-        for (i in startPosition..Math.min(string.length, endPosition) - 1) {
-            if (!validate(string[i])) {
-                return RegExpItem.MatchResult.Short(symbolsMatched = currentNumberOfSymbolsMatched)
-            } else {
-                currentNumberOfSymbolsMatched++
-            }
-        }
+        (startPosition until Math.min(string.length, endPosition))
+                .filterNot { validate(string[it]) }
+                .forEach { return RegExpItem.MatchResult.Short() }
+
         if (inputIsLonger) {
-            return RegExpItem.MatchResult.Long(symbolsMatched = currentNumberOfSymbolsMatched)
+            return RegExpItem.MatchResult.Long()
         } else if (inputIsShorter) {
-            return RegExpItem.MatchResult.Short(symbolsMatched = currentNumberOfSymbolsMatched)
+            return RegExpItem.MatchResult.Short()
         } else {
-            return RegExpItem.MatchResult.Full(symbolsMatched = currentNumberOfSymbolsMatched)
+            return RegExpItem.MatchResult.Full()
         }
     }
 

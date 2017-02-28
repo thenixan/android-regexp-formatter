@@ -66,7 +66,6 @@ class RegularExpression private constructor(vararg val items: RegExpItem) : RegE
 
     override fun matches(string: String, startPosition: Int, endPosition: Int): RegExpItem.MatchResult {
         var itemPosition = 0
-        var currentNumberOfSymbolsMatched = 0
         while (startPosition < string.length && itemPosition < items.size) {
             var end = -1
             if (itemPosition + 1 < items.size && items[itemPosition + 1] is StaticRegExpItem) {
@@ -77,23 +76,22 @@ class RegularExpression private constructor(vararg val items: RegExpItem) : RegE
                 end = string.length
             }
             if (end == -1) {
-                return RegExpItem.MatchResult.None(score = itemPosition, symbolsMatched = currentNumberOfSymbolsMatched)
+                return RegExpItem.MatchResult.None(score = itemPosition)
             } else {
                 val subResult = items[itemPosition].matches(string, startPosition, end)
-                currentNumberOfSymbolsMatched += subResult.symbolsMatched
                 when (subResult) {
                     is RegExpItem.MatchResult.Full -> startPosition - end
-                    is RegExpItem.MatchResult.Short -> return RegExpItem.MatchResult.Short(score = itemPosition, symbolsMatched = currentNumberOfSymbolsMatched)
-                    is RegExpItem.MatchResult.Long -> return RegExpItem.MatchResult.Long(score = itemPosition, symbolsMatched = currentNumberOfSymbolsMatched)
-                    is RegExpItem.MatchResult.None -> return RegExpItem.MatchResult.None(score = itemPosition, symbolsMatched = currentNumberOfSymbolsMatched)
+                    is RegExpItem.MatchResult.Short -> return RegExpItem.MatchResult.Short(score = itemPosition)
+                    is RegExpItem.MatchResult.Long -> return RegExpItem.MatchResult.Long(score = itemPosition)
+                    is RegExpItem.MatchResult.None -> return RegExpItem.MatchResult.None(score = itemPosition)
                 }
             }
             itemPosition++
         }
         if (itemPosition == items.size) {
-            return RegExpItem.MatchResult.Full(score = itemPosition, symbolsMatched = currentNumberOfSymbolsMatched)
+            return RegExpItem.MatchResult.Full(score = itemPosition)
         } else {
-            return RegExpItem.MatchResult.Short(score = itemPosition, symbolsMatched = currentNumberOfSymbolsMatched)
+            return RegExpItem.MatchResult.Short(score = itemPosition)
         }
     }
 

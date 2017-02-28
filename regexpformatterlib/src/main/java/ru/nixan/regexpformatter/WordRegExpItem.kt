@@ -13,13 +13,13 @@ class WordRegExpItem(override val length: Length) : RegExpItem {
             return RegExpItem.MatchResult.None()
         }
         if (string.length < endPosition) {
-            return RegExpItem.MatchResult.Short(symbolsMatched = string.length - startPosition)
+            return RegExpItem.MatchResult.Short()
         }
         if (length.compareWithPosition(endPosition - startPosition) < 0) {
-            return RegExpItem.MatchResult.Short(symbolsMatched = endPosition - startPosition)
+            return RegExpItem.MatchResult.Short()
         }
         if (length.compareWithPosition(endPosition - startPosition) > 0) {
-            return RegExpItem.MatchResult.Long(symbolsMatched = endPosition - startPosition)
+            return RegExpItem.MatchResult.Long()
         }
         return RegExpItem.MatchResult.Full()
     }

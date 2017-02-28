@@ -30,24 +30,21 @@ class DigitRegExpItem(override val length: Length) : RegExpItem {
         if (string.length < startPosition || string.length < endPosition && !validate(string.substring(startPosition, string.length)) || string.length >= endPosition && !validate(string.substring(startPosition, endPosition))) {
             return RegExpItem.MatchResult.None()
         }
-        var currentNumberOfSymbolsMatched = 0
 
         string.filterIndexed { i, c -> i >= startPosition && i < endPosition }
                 .forEach {
                     if (it in '0'..'9') {
-                        return RegExpItem.MatchResult.Short(symbolsMatched = currentNumberOfSymbolsMatched)
-                    } else {
-                        currentNumberOfSymbolsMatched++
+                        return RegExpItem.MatchResult.Short()
                     }
                 }
 
 
         if (length.compareWithPosition(endPosition - startPosition) < 0) {
-            return RegExpItem.MatchResult.Short(symbolsMatched = currentNumberOfSymbolsMatched)
+            return RegExpItem.MatchResult.Short()
         } else if (length.compareWithPosition(endPosition - startPosition) > 0) {
-            return RegExpItem.MatchResult.Long(symbolsMatched = currentNumberOfSymbolsMatched)
+            return RegExpItem.MatchResult.Long()
         } else {
-            return RegExpItem.MatchResult.Full(symbolsMatched = currentNumberOfSymbolsMatched)
+            return RegExpItem.MatchResult.Full()
         }
     }
 
