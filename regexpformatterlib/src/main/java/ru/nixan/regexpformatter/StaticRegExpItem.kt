@@ -25,16 +25,13 @@ class StaticRegExpItem(val staticData: String) : RegExpItem {
         if (string.length < startPosition)
             return RegExpItem.MatchResult.None()
 
-        var inputIsShorter = false
-
-        if (string.length < endPosition) inputIsShorter = true
-        if (endPosition - startPosition < length.length) inputIsShorter = true
         val lookup = string.substring(startPosition, Math.min(string.length, endPosition))
         val target = staticData.substring(0, Math.min(staticData.length, lookup.length))
         if (lookup != target) {
             return RegExpItem.MatchResult.None()
         }
-        if (inputIsShorter)
+
+        if (string.length < endPosition || endPosition - startPosition < length.length)
             return RegExpItem.MatchResult.Short()
         else
             return RegExpItem.MatchResult.Full()
