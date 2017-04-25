@@ -123,7 +123,8 @@ class RegularExpression private constructor(vararg val items: RegExpItem) : RegE
 
     companion object {
 
-        @JvmOverloads fun parseRegularExpression(regularExpression: String): RegularExpression {
+        @JvmStatic
+        fun parseRegularExpression(regularExpression: String): RegularExpression {
             val currentRegularExpression =
                     if (TextUtils.isEmpty(regularExpression)) {
                         "\\w*"

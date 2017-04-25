@@ -9,10 +9,10 @@ class RegExpFormatter(regExpMask: String) : TextWatcher {
 
     private var isEditing = false
 
-    override fun afterTextChanged(p0: Editable?) {
+    override fun afterTextChanged(input: Editable?) {
         if (!isEditing) {
             isEditing = true
-            p0?.let {
+            input?.let {
                 format(it)
             }
             isEditing = false

@@ -95,13 +95,13 @@ class IntervalRegExpItem(data: String, override val length: Length) : RegExpItem
 
         override fun toString() = "$from-$to"
 
-        override fun validate(item: Char) = from <= item && item <= to
+        override fun validate(item: Char) = item in from..to
 
     }
 
     private class StaticCondition(private val c: Char) : Condition {
 
-        override fun toString() = c.toString()
+        override fun toString() = "$c"
 
         override fun validate(item: Char) = c == item
     }
