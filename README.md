@@ -48,9 +48,9 @@ if (regExpFormatter.check((findViewById(R.id.test_edit) as (EditText)).text.toSt
 
 Possible formatting variants:
 
-`\d+` – at least one digit
-`\w*` - unlimited length of characters
-`[A-Z0-9]{2,4}` - two, three or four capital letters or digits
+- `\d+` – at least one digit
+- `\w*` - unlimited length of characters
+- `[A-Z0-9]{2,4}` - two, three or four capital letters or digits
 
 ----
 
