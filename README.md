@@ -24,7 +24,7 @@ For example you want your users to enter some kind of code that look like `123-4
 
 Declare your formatter as the `Acitivty`'s variable:
 ```
-val regExpFormatter = RegExpFormatter("\\d{2}12\\d{2,4}")
+val regExpFormatter = RegExpFormatter("\\d{3}-\\d{3}")
 ```
 
 After the `setContentView` you should set your `regExpFormatter` as the `TextWatcher` for the target `EditText`:
