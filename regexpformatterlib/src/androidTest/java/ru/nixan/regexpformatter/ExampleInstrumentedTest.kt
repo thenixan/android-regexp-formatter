@@ -42,6 +42,18 @@ class ExampleInstrumentedTest {
     }
 
     @Test
+    fun testStaticInMiddle() {
+        val formatter = RegExpFormatter("\\d{2}12\\d{2,4}")
+        assertEquals("9", formatter.format("9"))
+        assertEquals("99", formatter.format("99"))
+        assertEquals("99129", formatter.format("999"))
+        assertEquals("991299", formatter.format("9999"))
+        assertEquals("9912999", formatter.format("99999"))
+        assertEquals("99129999", formatter.format("999999"))
+        assertEquals("99129999", formatter.format("9999999"))
+    }
+
+    @Test
     fun testStaticFormatterEnd() {
         assertEquals("asdwww", RegExpFormatter("\\w{3}www").format("asd"))
         assertEquals("123www", RegExpFormatter("\\d{3}www").format("123"))

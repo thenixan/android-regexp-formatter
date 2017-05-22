@@ -65,10 +65,10 @@ class IntervalRegExpItem(data: String, override val length: Length) : RegExpItem
         if (string.length < endPosition) {
             inputIsShorter = true
         }
-        if (length.compareWithPosition(endPosition - startPosition) < 0) {
+        if (length.compareWithPosition(endPosition - startPosition - 1) < 0) {
             inputIsShorter = true
         }
-        if (length.compareWithPosition(endPosition - startPosition) > 0) {
+        if (length.compareWithPosition(endPosition - startPosition - 1) > 0) {
             inputIsLonger = true
         }
         (startPosition until Math.min(string.length, endPosition))

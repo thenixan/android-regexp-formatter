@@ -15,10 +15,10 @@ class WordRegExpItem(override val length: Length) : RegExpItem {
         if (string.length < endPosition) {
             return RegExpItem.MatchResult.Short()
         }
-        if (length.compareWithPosition(endPosition - startPosition) < 0) {
+        if (length.compareWithPosition(endPosition - startPosition - 1) < 0) {
             return RegExpItem.MatchResult.Short()
         }
-        if (length.compareWithPosition(endPosition - startPosition) > 0) {
+        if (length.compareWithPosition(endPosition - startPosition - 1) > 0) {
             return RegExpItem.MatchResult.Long()
         }
         return RegExpItem.MatchResult.Full()
