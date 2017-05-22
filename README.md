@@ -14,7 +14,7 @@ allprojects {
 - add these lines to the dependencies block in your module's `build.gradle` file
 ```
 dependencies {
-        compile 'com.github.thenixan:android-regexp-formatter:v0.0.2'
+        compile 'com.github.thenixan:android-regexp-formatter:v0.0.+'
 }
 ```
 
