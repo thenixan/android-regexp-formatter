@@ -14,7 +14,7 @@ allprojects {
 - add these lines to the dependencies block in your module's `build.gradle` file
 ```
 dependencies {
-        compile 'com.github.thenixan:android-regexp-formatter:v0.0.2'
+        compile 'com.github.thenixan:android-regexp-formatter:v0.0.+'
 }
 ```
 
@@ -45,11 +45,15 @@ if (regExpFormatter.check((findViewById(R.id.test_edit) as (EditText)).text.toSt
 ```
 
 ----
+
 Possible formatting variants:
-`\d+` – at least one digit
-`\w*` - unlimited length of characters
-`[A-Z0-9]{2,4}` - two, three or four capital letters or digits
+
+- `\d+` – at least one digit
+- `\w*` - unlimited length of characters
+- `[A-Z0-9]{2,4}` - two, three or four capital letters or digits
+
 ----
+
 Examples:
 
 Mask: `asd\d{3}asd`
