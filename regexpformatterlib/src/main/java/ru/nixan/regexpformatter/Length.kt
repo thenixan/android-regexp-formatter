@@ -27,7 +27,7 @@ sealed class Length {
     class AtLeast(val length: Int) : Length() {
 
         override fun compareWithPosition(position: Int): Int {
-            if (position < length) {
+            if (position + 1 < length) {
                 return -1
             } else {
                 return 0
@@ -48,9 +48,9 @@ sealed class Length {
     class Strict(val length: Int) : Length() {
 
         override fun compareWithPosition(position: Int): Int {
-            if (position < length) {
+            if (position + 1 < length) {
                 return -1
-            } else if (position > length) {
+            } else if (position + 1 > length) {
                 return 1
             } else {
                 return 0
@@ -73,9 +73,9 @@ sealed class Length {
         override fun toString() = "{$minLength, $maxLength}"
 
         override fun compareWithPosition(position: Int): Int {
-            if (position < minLength) {
+            if (position + 1 < minLength) {
                 return -1
-            } else if (position > maxLength) {
+            } else if (position + 1 > maxLength) {
                 return 1
             } else {
                 return 0

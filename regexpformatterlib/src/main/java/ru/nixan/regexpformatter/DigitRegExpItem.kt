@@ -39,9 +39,9 @@ class DigitRegExpItem(override val length: Length) : RegExpItem {
                 }
 
 
-        if (length.compareWithPosition(endPosition - startPosition) < 0) {
+        if (length.compareWithPosition(endPosition - startPosition - 1) < 0) {
             return RegExpItem.MatchResult.Short()
-        } else if (length.compareWithPosition(endPosition - startPosition) > 0) {
+        } else if (length.compareWithPosition(endPosition - startPosition - 1) > 0) {
             return RegExpItem.MatchResult.Long()
         } else {
             return RegExpItem.MatchResult.Full()
