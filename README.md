@@ -34,7 +34,7 @@ After the `setContentView` you should set your `regExpFormatter` as the `TextWat
 
 Optionally you can provide `inputType` for the `EditText` to set the proper keyboard type:
 ```
-(findViewById(R.id.test_edit) as (EditText)).inputType = regExpFormatter.inputType
+(findViewById(R.id.test_edit) as (EditText)).setRawInputType(regExpFormatter.inputType)
 ```
 
 Also you can check if the input is correct or not:
