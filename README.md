@@ -1,4 +1,5 @@
 [![](https://jitpack.io/v/thenixan/android-regexp-formatter.svg)](https://jitpack.io/#thenixan/android-regexp-formatter)
+[![Build Status](https://travis-ci.com/thenixan/android-regexp-formatter.svg?branch=develop)](https://travis-ci.com/thenixan/android-regexp-formatter)
 
 To add the library to your project:
 - add these lines to your root project's `build.gradle` file
