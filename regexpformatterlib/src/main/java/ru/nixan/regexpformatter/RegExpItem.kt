@@ -1,12 +1,10 @@
 package ru.nixan.regexpformatter
 
-import android.text.Editable
-
 interface RegExpItem {
 
     val length: Length
 
-    fun format(input: Editable, startPosition: Int = 0, endPosition: Int = input.length): Int
+    fun format(input: RegularExpressionSpannable, startPosition: Int = 0, endPosition: Int = input.length): Int
 
     fun matches(string: String, startPosition: Int = 0, endPosition: Int = string.length): MatchResult
 

@@ -1,6 +1,5 @@
 package ru.nixan.regexpformatter
 
-import android.text.Editable
 import java.util.*
 
 class LogicalRegExpItem : RegExpItem {
@@ -16,7 +15,7 @@ class LogicalRegExpItem : RegExpItem {
 
     override val length = variants.map { it.length }.reduce { total, length -> total + length }
 
-    override fun format(input: Editable, startPosition: Int, endPosition: Int) =
+    override fun format(input: RegularExpressionSpannable, startPosition: Int, endPosition: Int) =
             findMatched(variants, input.toString(), startPosition, endPosition)?.format(input, startPosition, endPosition)
                     ?: 0
 

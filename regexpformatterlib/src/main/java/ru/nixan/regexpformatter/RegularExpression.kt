@@ -1,18 +1,15 @@
 package ru.nixan.regexpformatter
 
-import android.text.Editable
 import android.text.InputType
-import android.text.SpannableStringBuilder
-import android.text.TextUtils
 import java.util.*
 
 class RegularExpression private constructor(vararg val items: RegExpItem) : RegExpItem {
 
     override val length: Length = items.map { it.length }.reduce { total, length -> total + length }
 
-    fun formatString(input: String): String = SpannableStringBuilder(input).apply { format(this) }.toString()
+    fun formatString(input: String): String = format(RegularExpressionSpannable.FromString(input)).toString()
 
-    override fun format(input: Editable, startPosition: Int, endPosition: Int): Int {
+    override fun format(input: RegularExpressionSpannable, startPosition: Int, endPosition: Int): Int {
         var lastPosition = endPosition
         var start = startPosition
         var regularExpressionItemPosition = 0
@@ -170,8 +167,7 @@ class RegularExpression private constructor(vararg val items: RegExpItem) : RegE
                                 val lengths = lengthString.toString().split(",").dropLastWhile(String::isEmpty).toTypedArray()
                                 if (lengths.size == 1) {
                                     length = Length.Strict(Integer.parseInt(lengths[0].trim()))
-                                } else if (lengths.size == 2 && TextUtils
-                                                .isEmpty(lengths[1].trim { it <= ' ' })) {
+                                } else if (lengths.size == 2 && lengths[1].trim { it <= ' ' }.isEmpty()) {
                                     length = Length.AtLeast(Integer.parseInt(lengths[0].trim()))
                                 } else if (lengths.size == 2) {
                                     length = Length.Varying(Integer.parseInt(lengths[0].trim()), Integer.parseInt(lengths[1].trim()))
@@ -211,8 +207,7 @@ class RegularExpression private constructor(vararg val items: RegExpItem) : RegE
                                 val lengths = lengthString.toString().split(",").dropLastWhile(String::isEmpty).toTypedArray()
                                 if (lengths.size == 1) {
                                     length = Length.Strict(Integer.parseInt(lengths[0].trim()))
-                                } else if (lengths.size == 2 && TextUtils
-                                                .isEmpty(lengths[1].trim())) {
+                                } else if (lengths.size == 2 && lengths[1].trim().isEmpty()) {
                                     length = Length.AtLeast(Integer.parseInt(lengths[0].trim()))
                                 } else if (lengths.size == 2) {
                                     length = Length.Varying(Integer.parseInt(lengths[0].trim()), Integer.parseInt(lengths[1].trim()))

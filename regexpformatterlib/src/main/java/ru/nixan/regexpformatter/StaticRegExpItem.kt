@@ -1,14 +1,12 @@
 package ru.nixan.regexpformatter
 
-import android.text.Editable
-
 class StaticRegExpItem(val staticData: String) : RegExpItem {
 
     override val length = Length.Strict(staticData.length)
 
     override fun toString() = staticData
 
-    override fun format(input: Editable, startPosition: Int, endPosition: Int): Int {
+    override fun format(input: RegularExpressionSpannable, startPosition: Int, endPosition: Int): Int {
         var lastPosition = endPosition
         var position = 0
         while (position + startPosition < lastPosition && (position < length.length)) {
