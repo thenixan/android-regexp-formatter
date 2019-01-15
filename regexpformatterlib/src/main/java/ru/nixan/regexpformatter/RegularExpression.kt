@@ -2,12 +2,15 @@ package ru.nixan.regexpformatter
 
 import android.text.Editable
 import android.text.InputType
+import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import java.util.*
 
 class RegularExpression private constructor(vararg val items: RegExpItem) : RegExpItem {
 
     override val length: Length = items.map { it.length }.reduce { total, length -> total + length }
+
+    fun formatString(input: String): String = SpannableStringBuilder(input).apply { format(this) }.toString()
 
     override fun format(input: Editable, startPosition: Int, endPosition: Int): Int {
         var lastPosition = endPosition
@@ -47,9 +50,9 @@ class RegularExpression private constructor(vararg val items: RegExpItem) : RegE
             lastPosition = input.length
         }
         if (lastFormatFinishedWithSize && items.size - regularExpressionItemPosition == 1 && items[regularExpressionItemPosition] is StaticRegExpItem) {
-            with(items[regularExpressionItemPosition] as StaticRegExpItem, {
+            with(items[regularExpressionItemPosition] as StaticRegExpItem) {
                 start += format(input, start, start + length.length)
-            })
+            }
             regularExpressionItemPosition++
         }
         if (length.compareWithPosition(input.length) > 0 && length is Length.Strict) {
@@ -88,45 +91,38 @@ class RegularExpression private constructor(vararg val items: RegExpItem) : RegE
             }
             itemPosition++
         }
-        if (itemPosition == items.size) {
-            return RegExpItem.MatchResult.Full(score = itemPosition)
+        return if (itemPosition == items.size) {
+            RegExpItem.MatchResult.Full(score = itemPosition)
         } else {
-            return RegExpItem.MatchResult.Short(score = itemPosition)
+            RegExpItem.MatchResult.Short(score = itemPosition)
         }
     }
 
     val inputType: Int
-        get() {
+        get() =
             if (items.size == 1 && items[0] is WordRegExpItem) {
-                return InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
             } else {
-                var onlyDigits = items.isNotEmpty()
-                this.items.forEach {
-                    if (it !is DigitRegExpItem && it !is StaticRegExpItem) {
-                        onlyDigits = false
-                    }
-                }
-                return if (onlyDigits)
+                val onlyDigits = items.isNotEmpty() && !items.any { it !is DigitRegExpItem && it !is StaticRegExpItem }
+                if (onlyDigits)
                     InputType.TYPE_CLASS_NUMBER
                 else
                     InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
             }
-        }
 
-    override fun toString(): String {
-        if (items.isEmpty()) {
-            return "\\w+"
-        } else {
-            return items.fold(StringBuilder(), { result, item -> result.append(item.toString()) }).toString()
-        }
-    }
+    override fun toString(): String =
+            if (items.isEmpty()) {
+                "\\w+"
+            } else {
+                items.joinToString(separator = "")
+            }
 
     companion object {
 
         @JvmStatic
         fun parseRegularExpression(regularExpression: String): RegularExpression {
             val currentRegularExpression =
-                    if (TextUtils.isEmpty(regularExpression)) {
+                    if (regularExpression.isEmpty()) {
                         "\\w*"
                     } else {
                         regularExpression
@@ -161,7 +157,7 @@ class RegularExpression private constructor(vararg val items: RegExpItem) : RegE
                         if (position < currentRegularExpressionString.length) {
                             c = currentRegularExpressionString[position]
                             if (c == '*') {
-                                length = Length.Unlimited()
+                                length = Length.Unlimited
                             } else if (c == '+') {
                                 length = Length.AtLeast(1)
                             } else if (c == '{') {
@@ -175,7 +171,7 @@ class RegularExpression private constructor(vararg val items: RegExpItem) : RegE
                                 if (lengths.size == 1) {
                                     length = Length.Strict(Integer.parseInt(lengths[0].trim()))
                                 } else if (lengths.size == 2 && TextUtils
-                                        .isEmpty(lengths[1].trim { it <= ' ' })) {
+                                                .isEmpty(lengths[1].trim { it <= ' ' })) {
                                     length = Length.AtLeast(Integer.parseInt(lengths[0].trim()))
                                 } else if (lengths.size == 2) {
                                     length = Length.Varying(Integer.parseInt(lengths[0].trim()), Integer.parseInt(lengths[1].trim()))
@@ -200,7 +196,7 @@ class RegularExpression private constructor(vararg val items: RegExpItem) : RegE
                         if (position < currentRegularExpressionString.length) {
                             c = currentRegularExpressionString[++position]
                             if (c == '*') {
-                                length = Length.Unlimited()
+                                length = Length.Unlimited
                                 position++
                             } else if (c == '+') {
                                 length = Length.AtLeast(1)
@@ -216,7 +212,7 @@ class RegularExpression private constructor(vararg val items: RegExpItem) : RegE
                                 if (lengths.size == 1) {
                                     length = Length.Strict(Integer.parseInt(lengths[0].trim()))
                                 } else if (lengths.size == 2 && TextUtils
-                                        .isEmpty(lengths[1].trim())) {
+                                                .isEmpty(lengths[1].trim())) {
                                     length = Length.AtLeast(Integer.parseInt(lengths[0].trim()))
                                 } else if (lengths.size == 2) {
                                     length = Length.Varying(Integer.parseInt(lengths[0].trim()), Integer.parseInt(lengths[1].trim()))

@@ -31,10 +31,10 @@ class StaticRegExpItem(val staticData: String) : RegExpItem {
             return RegExpItem.MatchResult.None()
         }
 
-        if (string.length < endPosition || endPosition - startPosition < length.length)
-            return RegExpItem.MatchResult.Short()
+        return if (string.length < endPosition || endPosition - startPosition < length.length)
+            RegExpItem.MatchResult.Short()
         else
-            return RegExpItem.MatchResult.Full()
+            RegExpItem.MatchResult.Full()
     }
 
 }

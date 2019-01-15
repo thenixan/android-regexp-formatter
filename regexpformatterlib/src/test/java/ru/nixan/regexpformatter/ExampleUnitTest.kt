@@ -13,7 +13,10 @@ class ExampleUnitTest {
 
     @Test
     @Throws(Exception::class)
-    fun addition_isCorrect() {
-        assertEquals(4, (2 + 2).toLong())
+    fun empty_isCorrect() {
+        val mask = RegularExpression.parseRegularExpression("")
+        assertEquals("asdf", mask.formatString("asdf"))
+        assertEquals("1234", mask.formatString("1234"))
+        assertEquals("", mask.formatString(""))
     }
 }
