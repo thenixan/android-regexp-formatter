@@ -7,7 +7,7 @@ class RegularExpression private constructor(vararg val items: RegExpItem) : RegE
 
     override val length: Length = items.map { it.length }.reduce { total, length -> total + length }
 
-    fun formatString(input: String): String = format(RegularExpressionSpannable.FromString(input)).toString()
+    fun formatString(input: String): String = RegularExpressionSpannable.FromString(input).also { format(it) }.toString()
 
     override fun format(input: RegularExpressionSpannable, startPosition: Int, endPosition: Int): Int {
         var lastPosition = endPosition
