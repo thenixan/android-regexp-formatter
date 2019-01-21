@@ -1,7 +1,6 @@
 package ru.nixan.regexpformatter
 
 import android.text.Editable
-import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.TextWatcher
 
@@ -58,9 +57,10 @@ class RegExpFormatter(regExpMask: String) : TextWatcher {
         return itemPosition == regularExpression.items.size
     }
 
-    fun format(input: String) = SpannableStringBuilder(input).apply { format(this) }.toString()
+    @Deprecated(message = "Please use the `formatString` function of RegularExpression class.")
+    fun format(input: String) = regularExpression.formatString(input)
 
-    fun format(input: Editable) = regularExpression.format(input, 0)
+    fun format(input: Editable) = regularExpression.format(RegularExpressionSpannable.FromEditable(input), 0)
 
     public val inputType = regularExpression.inputType
 

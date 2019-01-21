@@ -6,17 +6,15 @@ package ru.nixan.regexpformatter
 
 sealed class Length {
 
-    class Unlimited : Length() {
+    object Unlimited : Length() {
 
-        override fun compareWithPosition(position: Int): Int {
-            return 0
-        }
+        override fun compareWithPosition(position: Int): Int = 0
 
         override fun toString() = "*"
 
         override operator fun plus(b: Length): Length =
                 when (b) {
-                    is Unlimited -> Unlimited()
+                    is Unlimited -> Unlimited
                     is AtLeast -> AtLeast(b.length)
                     is Strict -> Strict(b.length)
                     is Varying -> Varying(b.minLength, b.maxLength)
@@ -26,13 +24,12 @@ sealed class Length {
 
     class AtLeast(val length: Int) : Length() {
 
-        override fun compareWithPosition(position: Int): Int {
-            if (position + 1 < length) {
-                return -1
-            } else {
-                return 0
-            }
-        }
+        override fun compareWithPosition(position: Int): Int =
+                if (position + 1 < length) {
+                    -1
+                } else {
+                    0
+                }
 
         override fun toString() = if (length == 1) "+" else "{$length,}"
 
@@ -47,15 +44,12 @@ sealed class Length {
 
     class Strict(val length: Int) : Length() {
 
-        override fun compareWithPosition(position: Int): Int {
-            if (position + 1 < length) {
-                return -1
-            } else if (position + 1 > length) {
-                return 1
-            } else {
-                return 0
-            }
-        }
+        override fun compareWithPosition(position: Int): Int =
+                when {
+                    position + 1 < length -> -1
+                    position + 1 > length -> 1
+                    else -> 0
+                }
 
         override fun toString() = "{$length}"
 
@@ -72,15 +66,12 @@ sealed class Length {
 
         override fun toString() = "{$minLength, $maxLength}"
 
-        override fun compareWithPosition(position: Int): Int {
-            if (position + 1 < minLength) {
-                return -1
-            } else if (position + 1 > maxLength) {
-                return 1
-            } else {
-                return 0
-            }
-        }
+        override fun compareWithPosition(position: Int): Int =
+                when {
+                    position + 1 < minLength -> -1
+                    position + 1 > maxLength -> 1
+                    else -> 0
+                }
 
         override operator fun plus(b: Length): Length =
                 when (b) {

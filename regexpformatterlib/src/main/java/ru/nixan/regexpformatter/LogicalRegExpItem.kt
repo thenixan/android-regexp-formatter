@@ -1,14 +1,13 @@
 package ru.nixan.regexpformatter
 
-import android.text.Editable
 import java.util.*
 
 class LogicalRegExpItem : RegExpItem {
 
-    private val variants = ArrayList<RegularExpression>()
+    private val variants = arrayListOf<RegularExpression>()
 
-    private val longVariants = ArrayList<RegularExpression>()
-    private val shortVariants = ArrayList<RegularExpression>()
+    private val longVariants = arrayListOf<RegularExpression>()
+    private val shortVariants = arrayListOf<RegularExpression>()
 
     private var lastSelectedVariant: RegularExpression? = null
 
@@ -16,9 +15,8 @@ class LogicalRegExpItem : RegExpItem {
 
     override val length = variants.map { it.length }.reduce { total, length -> total + length }
 
-    override fun format(input: Editable, startPosition: Int, endPosition: Int) =
-            findMatched(variants, input.toString(), startPosition, endPosition)
-                    ?.let { it.format(input, startPosition, endPosition) }
+    override fun format(input: RegularExpressionSpannable, startPosition: Int, endPosition: Int) =
+            findMatched(variants, input.toString(), startPosition, endPosition)?.format(input, startPosition, endPosition)
                     ?: 0
 
     private fun findMatched(variants: ArrayList<RegularExpression>, input: String,
@@ -31,20 +29,20 @@ class LogicalRegExpItem : RegExpItem {
                 }
 
         shortVariants.filter { it.items.isNotEmpty() }.apply {
-            if (contains(lastSelectedVariant)) {
-                return lastSelectedVariant
+            return if (contains(lastSelectedVariant)) {
+                lastSelectedVariant
             } else {
                 lastSelectedVariant = get(0)
-                return lastSelectedVariant
+                lastSelectedVariant
             }
         }
 
         longVariants.filter { it.items.isNotEmpty() }.apply {
-            if (contains(lastSelectedVariant)) {
-                return lastSelectedVariant
+            return if (contains(lastSelectedVariant)) {
+                lastSelectedVariant
             } else {
                 lastSelectedVariant = get(0)
-                return lastSelectedVariant
+                lastSelectedVariant
             }
         }
 

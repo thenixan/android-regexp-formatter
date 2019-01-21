@@ -1,15 +1,12 @@
 package ru.nixan.regexpformatter
 
-import android.text.Editable
-import android.text.TextUtils
-
 class DigitRegExpItem(override val length: Length) : RegExpItem {
 
-    private fun validate(s: String) = TextUtils.isDigitsOnly(s)
+    private fun validate(s: String) = s.all { it.isDigit() }
 
     override fun toString() = "\\d$length"
 
-    override fun format(input: Editable, startPosition: Int, endPosition: Int): Int {
+    override fun format(input: RegularExpressionSpannable, startPosition: Int, endPosition: Int): Int {
         var currentEndPosition = endPosition
         var position = 0
         while (length.compareWithPosition(position) <= 0 && startPosition + position < currentEndPosition) {
@@ -39,12 +36,10 @@ class DigitRegExpItem(override val length: Length) : RegExpItem {
                 }
 
 
-        if (length.compareWithPosition(endPosition - startPosition - 1) < 0) {
-            return RegExpItem.MatchResult.Short()
-        } else if (length.compareWithPosition(endPosition - startPosition - 1) > 0) {
-            return RegExpItem.MatchResult.Long()
-        } else {
-            return RegExpItem.MatchResult.Full()
+        return when {
+            length.compareWithPosition(endPosition - startPosition - 1) < 0 -> RegExpItem.MatchResult.Short()
+            length.compareWithPosition(endPosition - startPosition - 1) > 0 -> RegExpItem.MatchResult.Long()
+            else -> RegExpItem.MatchResult.Full()
         }
     }
 

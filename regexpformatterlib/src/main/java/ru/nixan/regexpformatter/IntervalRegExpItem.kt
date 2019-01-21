@@ -1,6 +1,5 @@
 package ru.nixan.regexpformatter
 
-import android.text.Editable
 import java.util.*
 
 class IntervalRegExpItem(data: String, override val length: Length) : RegExpItem {
@@ -35,7 +34,7 @@ class IntervalRegExpItem(data: String, override val length: Length) : RegExpItem
 
     private fun validate(item: Char) = conditions.any { it.validate(item) }
 
-    override fun format(input: Editable, startPosition: Int, endPosition: Int): Int {
+    override fun format(input: RegularExpressionSpannable, startPosition: Int, endPosition: Int): Int {
         var lastPosition = endPosition
         var position = 0
         while (position + startPosition < lastPosition && length.compareWithPosition(position) <= 0) {
