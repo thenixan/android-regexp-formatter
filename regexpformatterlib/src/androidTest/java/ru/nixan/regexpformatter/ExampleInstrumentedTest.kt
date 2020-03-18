@@ -25,58 +25,58 @@ class ExampleInstrumentedTest {
 
     @Test
     fun testStaticFormatterStartAndEnd() {
-        assertEquals("asd000asd", RegExpFormatter("asd\\d{3}asd").format("000"))
+        assertEquals("asd000asd", RegularExpression.parseRegularExpression("asd\\d{3}asd").formatString("000"))
     }
 
     @Test
     fun testStaticFormatterStart() {
-        assertEquals("asdwww", RegExpFormatter("asd\\w{3}").format("www"))
+        assertEquals("asdwww", RegularExpression.parseRegularExpression("asd\\w{3}").formatString("www"))
     }
 
     @Test
     fun testStaticFormatterMaskInput() {
-        val formatter = RegExpFormatter("asdw\\w{3}")
-        assertEquals("asdwww", formatter.format("www"))
-        assertEquals("asdw123", formatter.format("123"))
-        assertEquals("asd", formatter.format("asd"))
+        val formatter = RegularExpression.parseRegularExpression("asdw\\w{3}")
+        assertEquals("asdwww", formatter.formatString("www"))
+        assertEquals("asdw123", formatter.formatString("123"))
+        assertEquals("asd", formatter.formatString("asd"))
     }
 
     @Test
     fun testStaticInMiddle() {
-        val formatter = RegExpFormatter("\\d{2}12\\d{2,4}")
-        assertEquals("9", formatter.format("9"))
-        assertEquals("99", formatter.format("99"))
-        assertEquals("99129", formatter.format("999"))
-        assertEquals("991299", formatter.format("9999"))
-        assertEquals("9912999", formatter.format("99999"))
-        assertEquals("99129999", formatter.format("999999"))
-        assertEquals("99129999", formatter.format("9999999"))
+        val formatter = RegularExpression.parseRegularExpression("\\d{2}12\\d{2,4}")
+        assertEquals("9", formatter.formatString("9"))
+        assertEquals("99", formatter.formatString("99"))
+        assertEquals("99129", formatter.formatString("999"))
+        assertEquals("991299", formatter.formatString("9999"))
+        assertEquals("9912999", formatter.formatString("99999"))
+        assertEquals("99129999", formatter.formatString("999999"))
+        assertEquals("99129999", formatter.formatString("9999999"))
     }
 
     @Test
     fun testStaticFormatterEnd() {
-        assertEquals("asdwww", RegExpFormatter("\\w{3}www").format("asd"))
-        assertEquals("123www", RegExpFormatter("\\d{3}www").format("123"))
+        assertEquals("asdwww", RegularExpression.parseRegularExpression("\\w{3}www").formatString("asd"))
+        assertEquals("123www", RegularExpression.parseRegularExpression("\\d{3}www").formatString("123"))
     }
 
     @Test
     fun testEmptyFormatter() {
-        val formatter = RegExpFormatter("")
-        assertEquals("askdfjaosdifjas", formatter.format("askdfjaosdifjas"))
-        assertEquals("j89f13fj134", formatter.format("j89f13fj134"))
-        assertEquals("ajksdfnjaksdnfjkadsnfjkansdjkfnasdjkcnasjcnmadoscmnoadscadsocmadosicmasd", formatter.format("ajksdfnjaksdnfjkadsnfjkansdjkfnasdjkcnasjcnmadoscmnoadscadsocmadosicmasd"))
+        val formatter = RegularExpression.parseRegularExpression("")
+        assertEquals("askdfjaosdifjas", formatter.formatString("askdfjaosdifjas"))
+        assertEquals("j89f13fj134", formatter.formatString("j89f13fj134"))
+        assertEquals("ajksdfnjaksdnfjkadsnfjkansdjkfnasdjkcnasjcnmadoscmnoadscadsocmadosicmasd", formatter.formatString("ajksdfnjaksdnfjkadsnfjkansdjkfnasdjkcnasjcnmadoscmnoadscadsocmadosicmasd"))
     }
 
     @Test
     fun testVariableLength() {
-        val formatter = RegExpFormatter("\\d{1,2}test")
-        assertEquals("1", formatter.format("1"))
-        assertEquals("12test", formatter.format("12"))
-        assertEquals("1", formatter.format("1"))
-        assertEquals("1test", formatter.format("1k"))
-        assertEquals("1t", formatter.format("1t"))
-        assertEquals("1test", formatter.format("1t2"))
-        assertEquals("12test", formatter.format("12t2"))
+        val formatter = RegularExpression.parseRegularExpression("\\d{1,2}test")
+        assertEquals("1", formatter.formatString("1"))
+        assertEquals("12test", formatter.formatString("12"))
+        assertEquals("1", formatter.formatString("1"))
+        assertEquals("1test", formatter.formatString("1k"))
+        assertEquals("1t", formatter.formatString("1t"))
+        assertEquals("1test", formatter.formatString("1t2"))
+        assertEquals("12test", formatter.formatString("12t2"))
     }
 
     @Test
